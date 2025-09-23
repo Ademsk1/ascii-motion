@@ -8,6 +8,6 @@ body {
 
 span {
   display: inline-block;
-  max-width: 101vw;
+  max-width: 100vw;
   word-wrap: break-word;
 }

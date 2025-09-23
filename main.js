@@ -26,7 +26,7 @@ function deg2rad(deg) {
 
 function chooseChar(angle) {
   if (angle < 0) angle += Math.PI
-  const chars = ["-", "\\", "|", "/", "-"] //because 0,0 is at the top left corner, this needs to be inverted to have the \ before the / . Coordinates!! 
+  const chars = ["-", "/", "|", "\\", "-"] //because 0,0 is at the top left corner, this needs to be inverted to have the \ before the / . Coordinates!! 
   const index = Math.round(angle / (Math.PI / 4)) //round to nearest 45 degree val. 
 
   return chars[index]
@@ -42,11 +42,11 @@ function sleep(ms) {
 
 
 
-
 class Ascii {
   constructor() {
 
     this.element = document.getElementById("container")
+
     this.charWidth = 7.83
     this.charHeight = 15
     this.element = document.getElementById("container")
@@ -55,7 +55,7 @@ class Ascii {
     this.rowCount = Math.floor(this.windowWidth / this.charWidth)
     this.lineCount = Math.floor(this.windowHeight / this.charHeight)
     this.charCount = this.rowCount * this.lineCount
-    this.run()
+    this.setup()
   }
 
 
@@ -76,30 +76,27 @@ class Ascii {
     // await this.clearText()
     await this.printText("/")
 
-    this.charWidth = this.element.clientWidth
-    this.charHeight = this.element.clientHeight
+    // this.charWidth = this.element.clientWidth
+    // this.charHeight = this.element.clientHeight
     await this.clearText()
     // await this.printText(`char width: ${this.charWidth}. window width: ${window.innerWidth}\nwindow height: ${window.innerHeight} `)
   }
 
   async setup() {
-    const charsPerLine = this.windowWidth / this.charWidth
-    const lineNumber = this.windowHeight / this.charHeight
-    this.charCount = Math.round(charsPerLine * lineNumber)
-    this.element.textContent = "-".repeat(this.charCount)
-  }
-  async run() {
     await this.welcome()
-    await this.setup()
-    let newTextContent = ""
+
+    for (let i = 0; i < this.lineCount; i++) {
+      this.element.textContent = "-".repeat(this.rowCount)
+    }
+  }
+
+  async run(mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2) {
     this.element.textContent = ""
+    console.log({ mouseX, mouseY })
     for (let i = 0; i < this.charCount; i++) {
       const { x, y } = this.getCharCoordinates(i)
-      const angle = getAngle({ mouseX: window.innerWidth / 2, mouseY: window.innerHeight / 2, charX: x, charY: y })
+      const angle = getAngle({ mouseX, mouseY, charX: x, charY: y })
       const char = chooseChar(angle)
-      if (char === "/") {
-        console.log("uh oh ")
-      }
       this.element.textContent += char
     }
   }
@@ -123,7 +120,10 @@ class Ascii {
 }
 
 async function main() {
-  new Ascii()
+
+  const ascii = new Ascii()
+  document.addEventListener("mousemove", (event) => ascii.run(event.clientX, event.clientY))
+
   // const { innerWidth, innerHeight } = window
   // const container = document.getElementById("container")
   // await printText(container, "Welcome to this weird code!")
