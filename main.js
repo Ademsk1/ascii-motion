@@ -26,7 +26,7 @@ function deg2rad(deg) {
 
 function chooseChar(angle) {
   if (angle < 0) angle += Math.PI
-  const chars = ["-", "/", "|", "\\", "-"] //because 0,0 is at the top left corner, this needs to be inverted to have the \ before the / . Coordinates!! 
+  const chars = ["z", "\\", "|", "/", "@"] //because 0,0 is at the top left corner, this needs to be inverted to have the \ before the / . Coordinates!! 
   const index = Math.round(angle / (Math.PI / 4)) //round to nearest 45 degree val. 
 
   return chars[index]
@@ -52,17 +52,16 @@ class Ascii {
     this.element = document.getElementById("container")
     this.windowWidth = window.innerWidth
     this.windowHeight = window.innerHeight
-    this.rowCount = Math.floor(this.windowWidth / this.charWidth)
+    this.rowCount = Math.floor(this.windowWidth / (this.charWidth))
     this.lineCount = Math.floor(this.windowHeight / this.charHeight)
     this.charCount = this.rowCount * this.lineCount
-    this.setup()
   }
 
 
   getCharCoordinates(index) {
     const row = Math.floor(index / this.rowCount)
     const y = row * this.charHeight
-    const charOffset = index % this.rowCount
+    const charOffset = (index % this.rowCount) //two because there's a space
     const x = charOffset * this.charWidth
     return { x, y }
   }
@@ -122,6 +121,8 @@ class Ascii {
 async function main() {
 
   const ascii = new Ascii()
+  await ascii.setup()
+  // ascii.run()
   document.addEventListener("mousemove", (event) => ascii.run(event.clientX, event.clientY))
 
   // const { innerWidth, innerHeight } = window
