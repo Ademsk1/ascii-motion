@@ -13,13 +13,15 @@ class AsciiSpiral extends Ascii {
   async run(mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, t, spiralFreq) {
 
     this.element.textContent = ""
+    let content = ""
     for (let i = 0; i < this.charCount; i++) {
       const { x, y } = this.getCharCoordinates(i)
       const angle = this.getAngle({ mouseX, mouseY, charX: x, charY: y })
       const distance = this.getDistance(mouseX, mouseY, x, y)
       const char = this.chooseChar(angle, distance, t, spiralFreq)
-      this.element.textContent += char
+      content += char
     }
+    this.element.textContent = content
   }
   chooseChar(angle, distance, t, spiralFreq) {
     if (angle < 0) angle += Math.PI
@@ -49,20 +51,15 @@ async function main() {
   })
   window.addEventListener("resize", () => ascii.setDimensions(window.innerWidth, window.innerHeight))
 
-  function update(t) {
+  function update(t = 0) {
     ascii.run(mouseX, mouseY, t * 1e-3, spiralFreq)
-    requestAnimationFrame(update)
+    setTimeout(() => {
+      requestAnimationFrame(update)
+
+    }, 50)
+    // requestAnimationFrame(update)
   }
-  update(new Date())
-  // const { innerWidth, innerHeight } = window
-  // const container = document.getElementById("container")
-  // await printText(container, "Welcome to this weird code!")
-  // await sleep(500)
-  // await clearText(container)
-  // await printText(container, "Testing character sizes!")
-  // await sleep(500)
-  // await clearText(container)
-  // await printText(container, "/")
+  update()
 
   console.log(container.innerWidth)
 }

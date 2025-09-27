@@ -13,30 +13,15 @@ async function main() {
 
   function update(t) {
     ascii.run(mouseX, mouseY, t * 1e-3)
-    requestAnimationFrame(update)
+    setTimeout(() => {
+      requestAnimationFrame(update)
+
+    }, 50)
   }
   update(new Date())
-  // const { innerWidth, innerHeight } = window
-  // const container = document.getElementById("container")
-  // await printText(container, "Welcome to this weird code!")
-  // await sleep(500)
-  // await clearText(container)
-  // await printText(container, "Testing character sizes!")
-  // await sleep(500)
-  // await clearText(container)
-  // await printText(container, "/")
+
 
   console.log(container.innerWidth)
 }
 
 main()
-
-
-/////////////
-
-
-function testGetChar() {
-  const mouseX = 4, mouseY = 4, charX = 0, charY = 0
-  const result = getChar({ mouseX, mouseY, charX, charY })
-  console.log(result * 180 / Math.PI)
-}
