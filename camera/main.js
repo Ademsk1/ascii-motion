@@ -19,7 +19,7 @@ class AsciiImage {
     this.canvasH = canvas.clientHeight
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true })
     this.spans = []
-
+    this.rows = []
     this.generateSpans()
     this.asciiShades = `$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:," ^ '.` //lighter to darker
     this.divisions = Math.round(255 / this.asciiShades.length)
@@ -42,11 +42,7 @@ class AsciiImage {
     for (let rowIndex = 0; rowIndex < this.canvasH; rowIndex++) {
       const rowDiv = container.appendChild(document.createElement("div"))
       rowDiv.id = rowIndex
-      for (let columnIndex = 0; columnIndex < this.canvasW; columnIndex++) {
-        const span = rowDiv.appendChild(document.createElement("span"))
-        this.spans.push(span)
-        span.id = `${rowIndex},${columnIndex}`
-      }
+      this.rows.push(rowDiv)
     }
     console.log(this.spans.length)
 
@@ -65,14 +61,24 @@ class AsciiImage {
     let imageData = this.ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
     let data = imageData.data
     const t = new Date()
+    let rowIndex = 0
+    let line = ''
     for (let i = 0; i < data.length; i += 4) {
+      if (i / 4 > (rowIndex + 1) * this.canvasW) {
+        console.log(rowIndex)
+        console.log(i)
+        console.log(this.canvasW)
+        this.rows[rowIndex].textContent = line
+        rowIndex++
+        line = ''
+      }
       const lightness = (data[i] + data[i + 1] + data[i + 2]) / 3
-      // this.spans[i / 4].style.color = `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`
       data[i] = lightness
       data[i + 1] = lightness
       data[i + 2] = lightness
       data[i + 3] = 255
-      this.spans[i / 4].textContent = this.asciiMap[data[i]]
+      line += this.asciiMap[data[i]]
+      // this.spans[i / 4].textContent = this.asciiMap[data[i]]
     }
     console.log("Duration: ", new Date() - t)
 
