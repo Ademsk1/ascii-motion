@@ -20,18 +20,24 @@ class AsciiImage {
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true })
     this.spans = []
 
-    this.generateAscii()
+    this.generateSpans()
     this.asciiShades = `$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:," ^ '.` //lighter to darker
     this.divisions = Math.round(255 / this.asciiShades.length)
     this.segments = []
     for (let i = 0; i < 255; i += this.divisions) {
       this.segments.push(i) //[0,4,8,....]
     }
+    this.asciiMap = []
+    for (let i = 0; i < 255; i++) {
+      for (let j = 0; j < this.divisions; j++) {
+        this.asciiMap.push(this.asciiShades[i])
+      }
+    }
 
 
 
   }
-  generateAscii() {
+  generateSpans() {
     const container = document.getElementById("ascii-container")
     for (let rowIndex = 0; rowIndex < this.canvasH; rowIndex++) {
       const rowDiv = container.appendChild(document.createElement("div"))
@@ -55,14 +61,6 @@ class AsciiImage {
     }, 1)
 
   }
-  getAsciiShade(grayscale) { //grayscale 0-255
-    let asciiIndex = 0 //lightest value index
-    while (grayscale > this.segments[asciiIndex]) {
-      asciiIndex++
-    }
-    return this.asciiShades[asciiIndex]
-
-  }
   convertImage() {
     let imageData = this.ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
     let data = imageData.data
@@ -74,7 +72,7 @@ class AsciiImage {
       data[i + 1] = lightness
       data[i + 2] = lightness
       data[i + 3] = 255
-      this.spans[i / 4].textContent = this.getAsciiShade(data[i])
+      this.spans[i / 4].textContent = this.asciiMap[data[i]]
     }
     console.log("Duration: ", new Date() - t)
 
