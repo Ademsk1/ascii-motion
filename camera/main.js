@@ -69,7 +69,7 @@ class AsciiImage {
     const t = new Date()
     for (let i = 0; i < data.length; i += 4) {
       const lightness = (data[i] + data[i + 1] + data[i + 2]) / 3
-
+      // this.spans[i / 4].style.color = `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`
       data[i] = lightness
       data[i + 1] = lightness
       data[i + 2] = lightness
