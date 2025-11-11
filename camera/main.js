@@ -27,8 +27,8 @@ class AsciiImage {
     this.divisions = Math.round(255 / this.asciiShades.length)
     this.asciiMap = []
     let currentDensityIndex = 0
-    for (let i = 0; i < 255; i++) {
-      if (this.asciiDensity[currentDensityIndex + 1] * 255 < i) {
+    for (let i = 0; i < 256; i++) {
+      if (this.asciiDensity[currentDensityIndex + 1] * 256 < i) {
         currentDensityIndex++
       }
       this.asciiMap.push(this.asciiShades[currentDensityIndex])
