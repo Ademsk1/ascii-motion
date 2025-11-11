@@ -4,7 +4,6 @@
 const videoElement = document.getElementById("video")
 const canvas = document.getElementById("canvas")
 const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
-document.body.style.zoom = "30%";
 videoElement.srcObject = stream
 
 
