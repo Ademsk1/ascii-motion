@@ -3,9 +3,8 @@
 
 const videoElement = document.getElementById("video")
 const canvas = document.getElementById("canvas")
-
 const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
-
+document.body.style.zoom = "30%";
 videoElement.srcObject = stream
 
 
@@ -50,7 +49,6 @@ class AsciiImage {
       rowDiv.id = rowIndex
       this.rows.push(rowDiv)
     }
-    console.log(this.spans.length)
 
 
   }
@@ -66,14 +64,10 @@ class AsciiImage {
   convertImage() {
     let imageData = this.ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
     let data = imageData.data
-    const t = new Date()
     let rowIndex = 0
     let line = ''
     for (let i = 0; i < data.length; i += 4) {
       if (i / 4 > (rowIndex + 1) * this.canvasW) {
-        console.log(rowIndex)
-        console.log(i)
-        console.log(this.canvasW)
         this.rows[rowIndex].textContent = line
         rowIndex++
         line = ''
@@ -86,7 +80,6 @@ class AsciiImage {
       line += this.asciiMap[data[i]]
       // this.spans[i / 4].textContent = this.asciiMap[data[i]]
     }
-    console.log("Duration: ", new Date() - t)
 
 
     this.ctx.putImageData(imageData, 0, 0)
