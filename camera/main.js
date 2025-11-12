@@ -5,8 +5,8 @@ const videoElement = document.getElementById("video")
 const canvas = document.getElementById("canvas")
 const stream = await navigator.mediaDevices.getUserMedia({
   video: {
-    width: { ideal: window.innerWidth },
-    height: { ideal: window.innerHeight }
+    width: window.innerWidth,
+    height: window.innerHeight
   }
 })
 videoElement.srcObject = stream
