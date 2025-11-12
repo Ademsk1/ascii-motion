@@ -11,6 +11,9 @@ const stream = await navigator.mediaDevices.getUserMedia({
     aspectRatio: { ideal: window.innerWidth / window.innerHeight },
   }
 })
+const track = stream.getVideoTracks()[0]
+info.innerText += ' zoom: ' + JSON.stringify(track.getCapabilities().zoom)
+
 videoElement.srcObject = stream
 
 
