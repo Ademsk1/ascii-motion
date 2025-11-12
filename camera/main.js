@@ -85,7 +85,7 @@ class AsciiImage {
     let line = ''
     for (let i = 0; i < data.length; i += 4) {
       if (i / 4 > (rowIndex + 1) * this.canvasW) {
-        this.rows[rowIndex].textContent = line + '\n'
+        this.rows[rowIndex].textContent = line.split("").reverse().join('') + '\n'
         rowIndex++
         line = ''
       }
@@ -94,7 +94,7 @@ class AsciiImage {
       data[i + 1] = lightness
       data[i + 2] = lightness
       data[i + 3] = 255
-      line += this.asciiMap[data[i]] + ' ' // add spacing for more accurate aspect ratio
+      line += this.asciiMap[data[i]] // add spacing for more accurate aspect ratio
     }
 
 
