@@ -3,10 +3,13 @@
 
 const videoElement = document.getElementById("video")
 const canvas = document.getElementById("canvas")
+const info = document.getElementById("info")
+info.style.fontSize = '12px'
+info.innerText = `${window.innerWidth}x${window.innerHeight}`
 const stream = await navigator.mediaDevices.getUserMedia({
   video: {
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: { ideal: window.innerWidth },
+    height: { ideal: window.innerHeight }
   }
 })
 videoElement.srcObject = stream
