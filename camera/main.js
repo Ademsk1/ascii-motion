@@ -3,7 +3,12 @@
 
 const videoElement = document.getElementById("video")
 const canvas = document.getElementById("canvas")
-const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+const stream = await navigator.mediaDevices.getUserMedia({
+  video: {
+    width: { ideal: 1920 },
+    height: { ideal: 1080 }
+  }
+})
 videoElement.srcObject = stream
 
 
@@ -21,7 +26,6 @@ class AsciiImage {
     this.spans = []
     this.rows = []
     this.generateSpans()
-    // this.asciiShades = `$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:," ^ '.` //lighter to darker
     this.asciiShades = `\`.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@`
     this.asciiDensity = ASCII_DENSITIES
     this.divisions = Math.round(255 / this.asciiShades.length)
