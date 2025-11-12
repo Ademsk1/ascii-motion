@@ -3,14 +3,6 @@ html {
   font-family: monospace;
 }
 
-
-
-
-#ascii-container {
-  left: 50vw;
-  transform: translateX(-50%)
-}
-
 html {
   font-size: 4px;
 }
