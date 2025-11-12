@@ -13,7 +13,13 @@
 <body style="background-color: black; color:white;">
   <video id="video" width="100px" height="100px" autoplay></video>
   <canvas style="visibility: hidden;" id="canvas"></canvas>
-  <p id="info"></p>
+  <div style="display: flex; gap: 5px;">
+    <p id="info"></p>
+    <button onclick="zoom('in')">Zoom in</button>
+    <button onclick="()=>zoom('out')">Zoom out</button>
+
+  </div>
+
   <div id="big-container" style="height: 100vh; width:fit-content; overflow-x:scroll">
     <div id="ascii-container" style="height:max-content; position: absolute;"></div>
   </div>
