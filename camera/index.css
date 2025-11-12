@@ -1,0 +1,20 @@
+html {
+  overflow-x: scroll;
+}
+
+
+
+
+#ascii-container {
+  left: 50vw;
+  transform: translateX(-50%)
+}
+
+html {
+  font-size: 4px;
+}
+
+div {
+  white-space: nowrap;
+  overflow: hidden;
+}

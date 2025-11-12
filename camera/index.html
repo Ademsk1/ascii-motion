@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./index.css" rel="stylesheet">
   <title>Ascii Motion</title>
   <script type="module" defer src="./main.js"></script>
   <link href="../index.css" rel="stylesheet" />
@@ -12,8 +13,8 @@
 <body style="background-color: black; color:white;">
   <video id="video" autoplay width="0"></video>
   <canvas style="visibility: hidden;" id="canvas"></canvas>
-  <div id="big-container" style="width: 100vw; height: 100vh; display: flex; justify-content: center;">
-    <div id="ascii-container" style="height:max-content"></div>
+  <div id="big-container" style="height: 100vh; width:fit-content; overflow-x:scroll">
+    <div id="ascii-container" style="height:max-content; position: absolute;"></div>
   </div>
 </body>
 
