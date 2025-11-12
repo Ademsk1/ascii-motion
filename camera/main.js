@@ -85,7 +85,7 @@ class AsciiImage {
     let line = ''
     for (let i = 0; i < data.length; i += 4) {
       if (i / 4 > (rowIndex + 1) * this.canvasW) {
-        this.rows[rowIndex].textContent = line.split("").reverse().join('') + '\n'
+        this.rows[rowIndex].textContent = line.split("").reverse().join(' ') + '\n'
         rowIndex++
         line = ''
       }
