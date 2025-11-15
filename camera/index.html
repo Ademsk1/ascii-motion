@@ -11,12 +11,18 @@
 </head>
 
 <body style="background-color: black; color:white;">
-  <video id="video" width="100px" height="100px" autoplay></video>
-  <canvas style="visibility: hidden;" id="canvas"></canvas>
+  <video id="video" width="0px" height="0px" autoplay></video>
+  <!-- <canvas style="visibility: hidden;" id="canvas"></canvas> -->
   <div style="display: flex; gap: 5px;">
     <p id="info"></p>
     <button onclick="zoom('in')">Zoom in</button>
     <button onclick="()=>zoom('out')">Zoom out</button>
+    <input id="lineheight" type="number" step="0.1" />
+    <label for="lineheight">Vertical pixel spacing</label>
+    <input id="spacing" type="number">
+    <label for="spacing">HorizontalPixel spacing</label>
+    <input id="fontsize" type="number">
+    <div>t a t </div>
 
   </div>
 

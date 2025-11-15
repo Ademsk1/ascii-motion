@@ -2,7 +2,9 @@
 
 
 const videoElement = document.getElementById("video")
-const canvas = document.getElementById("canvas")
+// const canvas = document.getElementById("canvas")
+const canvas = new OffscreenCanvas(window.innerWidth / 5, window.innerHeight / 5)
+// 
 const info = document.getElementById("info")
 info.style.fontSize = '12px'
 info.innerText = `${window.innerWidth}x${window.innerHeight}`
@@ -14,6 +16,7 @@ const stream = await navigator.mediaDevices.getUserMedia({
 const track = stream.getVideoTracks()[0]
 
 const zoomCap = track.getCapabilities().zoom
+
 
 info.innerText += ' zoom: ' + JSON.stringify(zoomCap)
 
@@ -33,31 +36,63 @@ function zoom(mode) {
 
 const ASCII_DENSITIES = [0, 0.0751, 0.0829, 0.0848, 0.1227, 0.1403, 0.1559, 0.185, 0.2183, 0.2417, 0.2571, 0.2852, 0.2902, 0.2919, 0.3099, 0.3192, 0.3232, 0.3294, 0.3384, 0.3609, 0.3619, 0.3667, 0.3737, 0.3747, 0.3838, 0.3921, 0.396, 0.3984, 0.3993, 0.4075, 0.4091, 0.4101, 0.42, 0.423, 0.4247, 0.4274, 0.4293, 0.4328, 0.4382, 0.4385, 0.442, 0.4473, 0.4477, 0.4503, 0.4562, 0.458, 0.461, 0.4638, 0.4667, 0.4686, 0.4693, 0.4703, 0.4833, 0.4881, 0.4944, 0.4953, 0.4992, 0.5509, 0.5567, 0.5569, 0.5591, 0.5602, 0.5602, 0.565, 0.5776, 0.5777, 0.5818, 0.587, 0.5972, 0.5999, 0.6043, 0.6049, 0.6093, 0.6099, 0.6465, 0.6561, 0.6595, 0.6631, 0.6714, 0.6759, 0.6809, 0.6816, 0.6925, 0.7039, 0.7086, 0.7235, 0.7302, 0.7332, 0.7602, 0.7834, 0.8037, 0.9999]
 
+
+const ASCII_SHADES = `\`.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@`
+
+const lineheightSetter = document.getElementById("lineheight")
+const spacingSetter = document.getElementById("spacing")
+const fontsize = document.getElementById("fontsize")
+lineheightSetter.onchange = (e) => {
+  ascii.setLineHeight(e.target.value)
+}
+
+spacingSetter.onchange = (e) => {
+  console.log(e)
+  ascii.setSpacing(parseInt(e.target.value))
+}
+fontsize.onchange = (e) => {
+  ascii.setFontSize(e.target.value)
+}
+const MONOSPACE_CHAR_RATIO = 0.6 //height to width ratio of a character for the used monospace 
+
 class AsciiImage {
   constructor() {
-    this.canvas = document.getElementById("canvas")
+    this.canvas = canvas
     this.wW = window.innerWidth
     this.wH = window.innerHeight
-    this.canvasW = canvas.clientWidth
-    this.canvasH = canvas.clientHeight
+    this.canvasW = canvas.clientWidth || canvas.width
+    this.canvasH = canvas.clientHeight || canvas.height
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true })
     this.spans = []
     this.rows = []
+
+
     this.generateSpans()
-    this.asciiShades = `\`.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@`
     this.asciiDensity = ASCII_DENSITIES
-    this.divisions = Math.round(255 / this.asciiShades.length)
     this.asciiMap = []
+    this.spacing = ' '
     let currentDensityIndex = 0
     for (let i = 0; i < 256; i++) {
       if (this.asciiDensity[currentDensityIndex + 1] * 256 < i) {
         currentDensityIndex++
       }
-      this.asciiMap.push(this.asciiShades[currentDensityIndex])
+      this.asciiMap.push(ASCII_SHADES[currentDensityIndex])
     }
+  }
 
-
-
+  setLineHeight(lineheight) {
+    document.body.style.lineHeight = lineheight
+  }
+  setSpacing(spacing) {
+    console.log('called?')
+    this.spacing = ''
+    for (let i = 0; i < spacing; i++) {
+      this.spacing += ' '
+    }
+  }
+  setFontSize(fontsize) {
+    console.log('called?')
+    document.body.style.fontSize = `${fontsize}px`
   }
   generateSpans() {
     const container = document.getElementById("ascii-container")
@@ -79,13 +114,16 @@ class AsciiImage {
 
   }
   convertImage() {
-    let imageData = this.ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
-    let data = imageData.data
+    let imageData = this.ctx.getImageData(0, 0, canvas.clientWidth || canvas.width, canvas.clientHeight || canvas.height)
+    const { data } = imageData
     let rowIndex = 0
     let line = ''
     for (let i = 0; i < data.length; i += 4) {
+      // if the pixel index is greater than the current number of rows multiplied by the number of pixels on that row 
+      // i.e. have we finished a row yet?
+
       if (i / 4 > (rowIndex + 1) * this.canvasW) {
-        this.rows[rowIndex].textContent = line.split("").reverse().join(' ') + '\n'
+        this.rows[rowIndex].textContent = line.split("").reverse().join(this.spacing) + '\n'
         rowIndex++
         line = ''
       }

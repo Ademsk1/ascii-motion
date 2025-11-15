@@ -4,10 +4,12 @@ html {
 }
 
 html {
-  font-size: 4px;
+  font-size: 5px;
+  /* unitless allows us to just multiply by the font-size. */
+  line-height: 0.5;
 }
 
 div {
-  white-space: nowrap;
+  white-space: pre;
   overflow: hidden;
 }
